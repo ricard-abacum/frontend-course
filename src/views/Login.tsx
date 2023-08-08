@@ -1,1 +1,3 @@
-export const Login = () => <>Welcome to the login page!</>;
+import { LoginForm } from "../components/Login";
+
+export const Login = () => <LoginForm />;
