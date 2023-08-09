@@ -15,7 +15,7 @@ export const VendingMachineMenu = () => {
   const resetBalance = async () => {
     try {
       const response = await api.refund();
-      dispatch(updateBalance(response.data));
+      dispatch(updateBalance(response.data.balance));
     } catch (error) {
       alert(error);
     }
@@ -70,7 +70,7 @@ export const AddMoneyButton: FC<{ amount: number }> = ({ amount }) => {
   const addMoney = async () => {
     try {
       const response = await api.addCredit(amount);
-      dispatch(updateBalance(response.data));
+      dispatch(updateBalance(response.data.balance));
     } catch (error) {
       alert(error);
     }
@@ -127,6 +127,7 @@ const BalanceBox = () => {
   const balance = useSelector(
     (state: RootState) => state.vendingMachine.balance
   );
+  console.log(balance);
   return (
     <Box
       sx={{

@@ -3,9 +3,11 @@ import { useDispatch } from "react-redux";
 import { api } from "../utils/api";
 import { useState } from "react";
 import { updateUserInfo } from "../app/vendingMachineSlice";
+import { useNavigate } from "react-router";
 
 export const LoginForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -13,6 +15,7 @@ export const LoginForm = () => {
     try {
       const response = await api.login(username, password);
       dispatch(updateUserInfo(response.data));
+      navigate("/vending-machine");
     } catch (error) {
       alert(error);
     }
@@ -21,7 +24,9 @@ export const LoginForm = () => {
     <Box
       display="flex"
       flexDirection="column"
-      width="100%"
+      width="50%"
+      margin="auto"
+      gap={2}
       justifyContent="space-between"
     >
       <TextField
@@ -35,7 +40,7 @@ export const LoginForm = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Button onClick={login}> Confirm </Button>
+      <Button onClick={login}> Login </Button>
     </Box>
   );
 };

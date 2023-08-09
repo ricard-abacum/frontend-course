@@ -4,6 +4,9 @@ import { ProductGrid } from "../components/Product";
 import { VendingMachineMenu } from "../components/VendingMachineMenu";
 import { IProductSlot } from "../utils/types";
 import { api, simulateRequest } from "../utils/api";
+import { setProducts, updateUserInfo } from "../app/vendingMachineSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../app/store";
 
 const test_products_payload: IProductSlot[] = [
   {
@@ -39,7 +42,10 @@ const test_products_payload: IProductSlot[] = [
 ];
 
 export const VendingMachine = () => {
-  const [products, setProducts] = useState<Array<IProductSlot>>([]);
+  const dispatch = useDispatch();
+  const products = useSelector(
+    (state: RootState) => state.vendingMachine.products
+  );
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -48,8 +54,10 @@ export const VendingMachine = () => {
       try {
         setLoading(true);
         // const response = await simulateRequest(test_products_payload);
-        const response = await api.getProducts();
-        setProducts(response.data);
+        let response = await api.getProfile();
+        dispatch(updateUserInfo(response.data));
+        response = await api.getProducts();
+        dispatch(setProducts(response.data));
       } catch (error) {
         setError(error as Error);
       } finally {

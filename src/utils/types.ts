@@ -10,3 +10,13 @@ export interface IProductSlot {
   coordinates: [number, number];
   product: IProduct;
 }
+
+export interface IUser {
+  balance: number;
+  user: IUserInfo;
+}
+
+export interface IUserInfo {
+  name: string;
+  surname: string;
+}

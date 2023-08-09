@@ -4,8 +4,8 @@ import Grid from "@mui/material/Grid";
 import { FC } from "react";
 import { IProductSlot } from "../utils/types";
 import { useDispatch } from "react-redux";
-import { updateBalance } from "../app/vendingMachineSlice";
 import { api } from "../utils/api";
+import { updateBalance, setProducts } from "../app/vendingMachineSlice";
 
 export const Product: FC<{ product_slot: IProductSlot }> = ({
   product_slot,
@@ -15,7 +15,10 @@ export const Product: FC<{ product_slot: IProductSlot }> = ({
   const { name, price } = product;
   const orderProduct = async () => {
     try {
-      const response = await api.order({ slot_id: id, quantity: 1 });
+      let response = await api.order({ slot_id: id, quantity: 1 });
+      dispatch(updateBalance(response.data.balance));
+      response = await api.getProducts();
+      dispatch(setProducts(response.data));
     } catch (error) {
       alert(error);
     }
